@@ -1,4 +1,6 @@
 import { Router, Request, Response } from 'express';
+import { Gateway, gatewayModel } from './gateway.model';
+import { Device, deviceModel } from '../devices/devices.model';
 
 
 export class GatewayController {
@@ -17,11 +19,36 @@ export class GatewayController {
     }
 
     getAllGateways(req: Request, res: Response) {
-        res.send({mesa: 123});
+        gatewayModel.find({}, (err, data) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json(data);
+        });
     }
 
-    createGateway(req: Request, res: Response) {
-        res.send({sn: '123'});
+    async createGateway(req: Request, res: Response) {
+        const gateway: Gateway = req.body;
+        const devices: Device[] = [...gateway.devices];
+        const ids = [];
+        gateway.devices = ids;
+
+        for (const d of devices) {
+            console.log(d);
+            const saveD = new deviceModel(d);
+            const data = await saveD.save();
+            ids.push(data._id);
+        }
+        gateway.devices = ids;
+        console.log('t', gateway.devices, ids);
+        const saveGateway = new gatewayModel(gateway);
+
+        await saveGateway.save((err, data) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json(data);
+        });
     }
 
     deleteGateway(req: Request, res: Response) {
@@ -29,7 +56,7 @@ export class GatewayController {
     }
 
     createDevice(req: Request, res: Response) {
-        res.send({uid: 123});
+
     }
 
     deleteDevice(req: Request, res: Response) {

@@ -1,5 +1,6 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as mongoose from 'mongoose';
 
 class App {
   public app: express.Application;
@@ -11,6 +12,7 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.connectToTheDatabase();
   }
 
   public listen() {
@@ -27,6 +29,10 @@ class App {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });
+  }
+
+  private connectToTheDatabase() {
+    mongoose.connect(`mongodb://localhost:27017/network`);
   }
 }
 
