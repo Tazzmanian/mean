@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es2017",
+    "outDir": "./backend/dist",
+    "baseUrl": "./backend"
+  },
+  "include": [
+    "backend/**/*.ts",
+    "../src/app/shared/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
