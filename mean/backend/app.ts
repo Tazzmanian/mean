@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as mongoose from 'mongoose';
+import { HttpException } from './exceptions/HttpException';
 
 class App {
   public app: express.Application;
@@ -13,6 +14,7 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.connectToTheDatabase();
+    this.initializeErrorHandling();
   }
 
   public listen() {
@@ -33,6 +35,21 @@ class App {
 
   private connectToTheDatabase() {
     mongoose.connect(`mongodb://localhost:27017/network`);
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(this.errorMiddleware);
+  }
+
+  private errorMiddleware(err: HttpException, req: express.Request, res: express.Response, next: express.NextFunction) {
+    const status = err.status || 500;
+    const message = err.message || 'Something went wrong';
+    res
+      .status(status)
+      .send({
+        status,
+        message,
+      });
   }
 }
 
