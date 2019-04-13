@@ -2,6 +2,9 @@ import { Router, Request, Response } from 'express';
 import { Gateway, gatewayModel } from './gateway.model';
 import { Device, deviceModel } from '../devices/devices.model';
 import { Document } from 'mongoose';
+import { NextFunction } from 'connect';
+import { GatewayNotFoundException } from '../exceptions/GatewayNotFoundException';
+import { DeviceNotFoundException } from '../exceptions/DeviceNotFoundException';
 
 
 export class GatewayController {
@@ -28,7 +31,7 @@ export class GatewayController {
         });
     }
 
-    async createGateway(req: Request, res: Response) {
+    async createGateway(req: Request, res: Response, next: NextFunction) {
         const gateway: Gateway = req.body;
         const devices: Device[] = [...gateway.devices];
         let ids = [];
@@ -49,7 +52,7 @@ export class GatewayController {
         });
     }
 
-    async deleteGateway(req: Request, res: Response) {
+    async deleteGateway(req: Request, res: Response, next: NextFunction) {
         const gw = await gatewayModel.findOne({ sn: req.params.sn });
         if (gw) {
             const ids = (gw as Gateway & Document).devices.map((x: Device & Document) => x._id);
@@ -57,11 +60,11 @@ export class GatewayController {
             await gatewayModel.deleteOne({ _id: gw._id });
             res.json(gw);
         } else {
-            res.send({ msg: 'error' });
+            next(new GatewayNotFoundException(req.params.sn));
         }
     }
 
-    async createDevice(req: Request, res: Response) {
+    async createDevice(req: Request, res: Response, next: NextFunction) {
         const gw = await gatewayModel.findOne({ sn: req.params.sn });
         if ((gw as Gateway & Document).devices.length < 10) {
             const device = new deviceModel(req.body);
@@ -69,19 +72,23 @@ export class GatewayController {
             await gatewayModel.updateOne({ sn: req.params.sn }, { $push: { devices: (d as Device & Document)._id } });
             res.json(d);
         }
-        res.send({ msg: 'error' });
+        next(new GatewayNotFoundException(req.params.sn));
     }
 
-    async deleteDevice(req: Request, res: Response) {
+    async deleteDevice(req: Request, res: Response, next: NextFunction) {
         const gw = await gatewayModel.findOne({ sn: req.params.sn });
         if (gw) {
             const ids = (gw as Gateway & Document).devices.map((x: Device & Document) => x._id);
             const dev = await deviceModel.findOne({ _id: { $in: ids }, UID: req.params.uid });
-            await gatewayModel.updateOne({ sn: req.params.sn }, { $pull: { devices: (dev as Device & Document)._id } });
-            const del = await deviceModel.deleteOne({ _id: (dev as Device & Document)._id });
-            res.json(del);
+            if (dev === null) {
+                await next(new DeviceNotFoundException(req.params.uid));
+            } else {
+                await gatewayModel.updateOne({ sn: req.params.sn }, { $pull: { devices: (dev as Device & Document)._id } });
+                const del = await deviceModel.deleteOne({ _id: (dev as Device & Document)._id });
+                res.json(del);
+            }
         } else {
-            res.send({ msg: 'error' });
+            next(new GatewayNotFoundException(req.params.sn));
         }
     }
 }
