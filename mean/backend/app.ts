@@ -7,7 +7,7 @@ class App {
   public app: express.Application;
   public port: number;
 
-  constructor(controllers, port) {
+  constructor(controllers, port, private test?: boolean) {
     this.app = express();
     this.port = port;
 
@@ -34,6 +34,9 @@ class App {
   }
 
   private connectToTheDatabase() {
+    if (this.test) {
+      return;
+    }
     mongoose.connect(`mongodb://localhost:27017/network`);
   }
 

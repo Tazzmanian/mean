@@ -9,8 +9,7 @@
     ],
   },
   "include": [
-    "backend/**/*.ts",
-    "../src/app/shared/*.ts"
+    "backend/**/*.ts"
   ],
   "exclude": [
     "node_modules"
