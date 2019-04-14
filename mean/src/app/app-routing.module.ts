@@ -4,7 +4,8 @@ import { AppComponent } from './app.component';
 import { PreviewComponent } from './preview/preview.component';
 
 const routes: Routes = [
-  { path: '', component: PreviewComponent }
+  { path: '', component: PreviewComponent },
+  { path: 'gateways/:sn', component: PreviewComponent }
 ];
 
 @NgModule({

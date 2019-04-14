@@ -1,3 +1,10 @@
-<p>
-  preview works!
-</p>
+<div class="row">
+  <div class="col-lg-6">
+    <h3>Gateways</h3>
+    <app-gateway *ngFor="let gw of gwList" [gw]="gw" (remove)="onRemove($event)"></app-gateway>
+  </div>
+  <div class="col-lg-6">
+    <h3>Devices</h3>
+    <app-device [gwList]="gwList"></app-device>
+  </div>
+</div>

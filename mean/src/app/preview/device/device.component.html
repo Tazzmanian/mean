@@ -1,0 +1,19 @@
+<div class="row ml-1" *ngFor="let d of devices">
+  <div class="col">
+    UID: {{d.UID}}
+  </div>
+  <div class="col">
+    Vendor: {{d.vendor}}
+  </div>
+  <div class="col">
+    Status: {{d.status}}
+  </div>
+  <div class="col">
+    Date: {{d.date | date}}
+  </div>
+  <div class="col-1 d-flex align-items-center">
+    <i class="material-icons" (click)="deleteDevice(d.UID)">
+      remove_circle_outline
+    </i>
+  </div>
+</div>

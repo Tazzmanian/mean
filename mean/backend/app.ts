@@ -2,6 +2,8 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as mongoose from 'mongoose';
 import { HttpException } from './exceptions/HttpException';
+import * as cors from 'cors';
+
 
 class App {
   public app: express.Application;
@@ -11,10 +13,15 @@ class App {
     this.app = express();
     this.port = port;
 
+    this.initializeCors();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.connectToTheDatabase();
     this.initializeErrorHandling();
+  }
+
+  initializeCors() {
+    this.app.use(cors());
   }
 
   public listen() {

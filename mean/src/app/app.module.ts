@@ -5,14 +5,20 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PreviewComponent } from './preview/preview.component';
+import { GatewayComponent } from './preview/gateway/gateway.component';
+import { DeviceComponent } from './preview/device/device.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PreviewComponent
+    PreviewComponent,
+    GatewayComponent,
+    DeviceComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FlexLayoutModule,
     AppRoutingModule
   ],

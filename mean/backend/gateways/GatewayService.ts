@@ -7,13 +7,39 @@ import { DeviceNotFoundException } from '../exceptions/DeviceNotFoundException';
 
 export class GatewayService {
 
-    getAllGateways(req: Request, res: Response) {
-        gatewayModel.find({}, (err, data) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(data);
-        });
+    async getAllGateways(req: Request, res: Response) {
+        const gws = await gatewayModel.find({});
+
+        const newGws: Gateway[] = [];
+        for (const gw of gws) {
+            const temp: Gateway = {} as Gateway;
+            temp.IPv4 = (gw as Gateway & Document).IPv4;
+            temp.name = (gw as Gateway & Document).name;
+            temp.sn = (gw as Gateway & Document).sn;
+            const devices = await deviceModel.find({ _id: { $in: (gw as Gateway & Document).devices } });
+            temp.devices = (devices as unknown) as Device[];
+            console.log(temp);
+            
+            newGws.push(temp);
+        }
+
+        res.json(newGws);
+        // , async (err, data) => {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     const newData: Gateway[] = [];
+        //     for (const gw of data) {
+        //         const devices = await deviceModel.find({ _id: { $in: (gw as Gateway & Document).devices } });
+        //         const gwt = (gw as Gateway & Document);
+        //         const temp: Gateway = {...(gw as unknown as Gateway)};
+        //         console.log(temp);
+        //         temp.devices.slice(0, 9);
+        //         console.log(temp);
+        //     }
+
+        //     res.json(newData);
+        // });
     }
 
     async createGateway(req: Request, res: Response, next: NextFunction) {

@@ -1,0 +1,29 @@
+.row {
+    background-color: grey;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.row:hover {
+    background-color: rgb(66, 66, 66);
+}
+
+i:hover {
+    color: rgb(226, 113, 7);
+    cursor: pointer;
+}
+i {
+    display: none;
+}
+
+.row.active i {
+    display: block;
+}
+
+.row.active {
+    background-color: rgb(10, 10, 114);
+}
+
+.row:focus {
+    outline: none;
+}

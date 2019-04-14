@@ -1,0 +1,16 @@
+<div class="row" [routerLink]="['/gateways', gw.sn]" routerLinkActive="active">
+  <div class="col">
+    Name: {{gw.name}}
+  </div>
+  <div class="col">
+    SN: {{gw.sn}}
+  </div>
+  <div class="col">
+    IP Address: {{gw.IPv4}}
+  </div>
+  <div class="col-1 d-flex align-items-center">
+    <i class="material-icons" (click)="deleteGateway(gw.sn)">
+      remove_circle_outline
+    </i>
+  </div>
+</div>
