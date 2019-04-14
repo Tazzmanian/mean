@@ -4,6 +4,8 @@ import { Device, deviceModel } from '../devices/devices.model';
 import { Document } from 'mongoose';
 import { GatewayNotFoundException } from '../exceptions/GatewayNotFoundException';
 import { DeviceNotFoundException } from '../exceptions/DeviceNotFoundException';
+import { GatewaySaveException } from '../exceptions/GatewaySaveException';
+
 
 export class GatewayService {
 
@@ -18,8 +20,7 @@ export class GatewayService {
             temp.sn = (gw as Gateway & Document).sn;
             const devices = await deviceModel.find({ _id: { $in: (gw as Gateway & Document).devices } });
             temp.devices = (devices as unknown) as Device[];
-            console.log(temp);
-            
+
             newGws.push(temp);
         }
 
@@ -44,20 +45,24 @@ export class GatewayService {
 
     async createGateway(req: Request, res: Response, next: NextFunction) {
         const gateway: Gateway = req.body;
-        const devices: Device[] = [...gateway.devices];
         let ids = [];
-        gateway.devices = ids;
+        if (gateway.devices && gateway.devices.length > 0) {
+            const devices: Device[] = [...gateway.devices];
+            gateway.devices = ids;
 
-        const ds = await deviceModel.insertMany(devices);
+            const ds = await deviceModel.insertMany(devices);
 
-        ids = ds.map(x => x._id);
-        gateway.devices = ids;
+            ids = ds.map(x => x._id);
+            gateway.devices = ids;
+        }
         const saveGateway = new gatewayModel(gateway);
 
         await saveGateway.save(async (err, data) => {
             if (err) {
                 await deviceModel.deleteMany({ _id: { $in: ids } });
-                res.send(err);
+                console.log(err);
+                
+                next(new GatewaySaveException(err));
             }
             res.json(data);
         });

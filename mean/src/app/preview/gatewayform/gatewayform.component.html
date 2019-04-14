@@ -1,0 +1,41 @@
+<div class="row py-3 start mb-3">
+  <div class="col">
+    <form [formGroup]="gwFormGroup" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" formControlName="name">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="imagePath">SN</label>
+            <input type="text" id="sn" class="form-control" formControlName="sn">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="imagePath">IP Address</label>
+            <input type="text" id="ip" class="form-control" formControlName="IPv4">
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="error">
+        <div class="col pb-3">
+          <div class="bg-danger p-3 rounded">{{error}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-success mr-2" [disabled]="gwFormGroup.invalid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

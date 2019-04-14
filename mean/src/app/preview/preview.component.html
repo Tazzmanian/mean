@@ -1,10 +1,23 @@
-<div class="row">
-  <div class="col-lg-6">
-    <h3>Gateways</h3>
+
+<app-deviceform *ngIf="showD"></app-deviceform>
+<app-gatewayform *ngIf="showGw" (close)="closeGW()"></app-gatewayform>
+<div class="row justify-content-around">
+  <div class="col-lg-5">
+    <div class="d-flex justify-content-between">
+      <h3>Gateways</h3>
+      <i class="material-icons" (click)="onClickGw()">
+        add
+      </i>
+    </div>
     <app-gateway *ngFor="let gw of gwList" [gw]="gw" (remove)="onRemove($event)"></app-gateway>
   </div>
   <div class="col-lg-6">
-    <h3>Devices</h3>
-    <app-device [gwList]="gwList"></app-device>
+    <div class="d-flex justify-content-between">
+      <h3>Devices</h3>
+      <i class="material-icons" *ngIf="dC" (click)="onClickD()">
+        add
+      </i>
+    </div>
+    <app-device [gwList]="gwList" (limit)="dCount($event)"></app-device>
   </div>
 </div>

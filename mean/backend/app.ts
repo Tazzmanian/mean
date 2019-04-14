@@ -52,6 +52,8 @@ class App {
   }
 
   private errorMiddleware(err: HttpException, req: express.Request, res: express.Response, next: express.NextFunction) {
+    console.log('errorMiddleware', err.message);
+    
     const status = err.status || 500;
     const message = err.message || 'Something went wrong';
     res

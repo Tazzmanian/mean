@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Gateway } from 'src/app/shared/gateway.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Device } from 'src/app/shared/devices.model';
@@ -17,6 +17,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
   gwsSubs: Subscription = new Subscription();
   delSubs: Subscription = new Subscription();
   sn: string;
+  @Output() limit = new EventEmitter();
 
 
   constructor(
@@ -48,6 +49,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
 
   fillGW(sn: string) {
     this.devices = this.gwList.filter(x => x.sn === sn)[0].devices;
+    this.limit.emit(this.devices.length.toString());
   }
 
   ngOnDestroy() {

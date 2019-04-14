@@ -3,3 +3,14 @@ body {
     background-color: rgb(16, 14, 22) !important;
     color: white !important;
 }
+
+.row {
+    cursor: pointer;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+    border-color: red;
+    border-style: solid;
+    border-width: 1px;
+} 

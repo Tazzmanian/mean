@@ -13,6 +13,9 @@ export class PreviewComponent implements OnInit, OnDestroy {
 
   gwListSubs: Subscription = new Subscription();
   gwList: Gateway[] = [];
+  dC = false;
+  showGw: boolean;
+  showD: boolean;
 
   constructor(private gws: GatewayService, private router: Router) { }
 
@@ -36,4 +39,25 @@ export class PreviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
+  dCount(count) {
+    this.dC = count < 10;
+  }
+
+  onClickGw() {
+    this.showGw = true;
+    this.showD = false;
+  }
+
+  onClickD() {
+    this.showGw = false;
+    this.showD = true;
+  }
+
+  closeGW() {
+    this.showGw = false;
+  }
+
+  closeD() {
+    this.showD = false;
+  }
 }
