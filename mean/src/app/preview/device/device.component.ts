@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Gateway } from 'src/app/shared/gateway.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Device } from 'src/app/shared/devices.model';
@@ -30,11 +30,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
       this.sn = params.sn;
 
       if (this.sn) {
-        if (this.gwList.length === 0) {
-          this.subGW();
-        } else {
-          this.fillGW(this.sn);
-        }
+        this.subGW();
       }
     });
   }

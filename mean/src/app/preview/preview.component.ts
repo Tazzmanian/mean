@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { GatewayService } from '../shared/gateway.service';
 import { Subscription } from 'rxjs';
 import { Gateway } from '../shared/gateway.model';
 import { Router } from '@angular/router';
+import { DeviceComponent } from './device/device.component';
 
 @Component({
   selector: 'app-preview',
@@ -16,6 +17,8 @@ export class PreviewComponent implements OnInit, OnDestroy {
   dC = false;
   showGw: boolean;
   showD: boolean;
+
+  @ViewChild('devices') devices: DeviceComponent;
 
   constructor(private gws: GatewayService, private router: Router) { }
 
@@ -55,9 +58,12 @@ export class PreviewComponent implements OnInit, OnDestroy {
 
   closeGW() {
     this.showGw = false;
+    this.loadGW();
   }
 
   closeD() {
     this.showD = false;
+    this.loadGW();
+    this.devices.ngOnInit();
   }
 }

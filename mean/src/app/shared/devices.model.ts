@@ -1,7 +1,7 @@
 export interface Device {
-    uid: number;
+    UID: number;
     vendor: string;
-    date: Date;
+    date?: Date;
     status: boolean;
     _id?: string;
 }

@@ -1,3 +1,41 @@
-<p>
-  deviceform works!
-</p>
+<div class="row py-3 start mb-3">
+  <div class="col">
+    <form [formGroup]="dFormGroup" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="name">UID</label>
+            <input type="number" class="form-control" formControlName="UID">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="imagePath">Vendor</label>
+            <input type="text" class="form-control" formControlName="vendor">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="imagePath">Status</label>
+            <input type="text" class="form-control" formControlName="status">
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="error">
+        <div class="col pb-3">
+          <div class="bg-danger p-3 rounded">{{error}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-success mr-2" [disabled]="dFormGroup.invalid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

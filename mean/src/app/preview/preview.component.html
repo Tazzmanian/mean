@@ -1,5 +1,5 @@
 
-<app-deviceform *ngIf="showD"></app-deviceform>
+<app-deviceform *ngIf="showD" [sn]="sn" (close)="closeD()"></app-deviceform>
 <app-gatewayform *ngIf="showGw" (close)="closeGW()"></app-gatewayform>
 <div class="row justify-content-around">
   <div class="col-lg-5">
@@ -18,6 +18,6 @@
         add
       </i>
     </div>
-    <app-device [gwList]="gwList" (limit)="dCount($event)"></app-device>
+    <app-device [gwList]="gwList" (limit)="dCount($event)" #devices></app-device>
   </div>
 </div>

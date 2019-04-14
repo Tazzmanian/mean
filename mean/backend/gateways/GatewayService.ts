@@ -87,8 +87,9 @@ export class GatewayService {
             const d = await device.save();
             await gatewayModel.updateOne({ sn: req.params.sn }, { $push: { devices: (d as Device & Document)._id } });
             res.json(d);
+        } else {
+            next(new GatewayNotFoundException(req.params.sn));
         }
-        next(new GatewayNotFoundException(req.params.sn));
     }
 
     async deleteDevice(req: Request, res: Response, next: NextFunction) {

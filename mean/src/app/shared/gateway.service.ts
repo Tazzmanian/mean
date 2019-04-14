@@ -26,7 +26,7 @@ export class GatewayService {
   }
 
   addDevice(device: Device, sn: string) {
-    return this.http.post(`${this.MONGO_URL}/gateways/${sn}`, device);
+    return this.http.post(`${this.MONGO_URL}/gateways/${sn}/devices`, device);
   }
 
   deleteDevice(uid: number, sn: string) {
