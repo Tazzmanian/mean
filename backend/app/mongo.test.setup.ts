@@ -1,15 +1,20 @@
 import path from 'path';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import NodeEnvironment from 'jest-environment-node';
+import { Config } from '@jest/types';
+import { Script } from 'vm';
 
 
 export class MongoTest extends NodeEnvironment {
     mongod = new MongoMemoryServer({
         autoStart: false,
     });
-    mongoConfig: {};
+    mongoConfig: {
+        mongoDBName: string;
+        mongoUri: string;
+    } | undefined;
 
-    constructor(config) {
+    constructor(config: Config.ProjectConfig) {
         super(config);
     }
 
@@ -25,7 +30,7 @@ export class MongoTest extends NodeEnvironment {
         await super.teardown();
     }
 
-    runScript(script) {
+    runScript(script: Script) {
         return super.runScript(script);
     }
 

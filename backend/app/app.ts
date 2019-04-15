@@ -1,15 +1,16 @@
 import * as bodyParser from 'body-parser';
-import * as express from 'express';
-import * as mongoose from 'mongoose';
+import express from 'express';
+import mongoose from 'mongoose';
 import { HttpException } from './exceptions/HttpException';
-import * as cors from 'cors';
+import cors from 'cors';
+import { Controller } from './Controller.interface';
 
 
 class App {
   public app: express.Application;
   public port: number;
 
-  constructor(controllers, port, private test?: boolean) {
+  constructor(controllers: Controller[], port: number, private test?: boolean) {
     this.app = express();
     this.port = port;
 
@@ -34,7 +35,7 @@ class App {
     this.app.use(bodyParser.json());
   }
 
-  private initializeControllers(controllers) {
+  private initializeControllers(controllers: Controller[]) {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });

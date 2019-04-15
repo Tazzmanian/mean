@@ -45,7 +45,7 @@ export class GatewayService {
 
     async createGateway(req: Request, res: Response, next: NextFunction) {
         const gateway: Gateway = req.body;
-        let ids = [];
+        let ids: any[] | never[] | Device[] = [];
         if (gateway.devices && gateway.devices.length > 0) {
             const devices: Device[] = [...gateway.devices];
             gateway.devices = ids;
@@ -71,7 +71,7 @@ export class GatewayService {
     async deleteGateway(req: Request, res: Response, next: NextFunction) {
         const gw = await gatewayModel.findOne({ sn: req.params.sn });
         if (gw) {
-            const ids = (gw as Gateway & Document).devices.map((x: Device & Document) => x._id);
+            const ids = (gw as unknown as Gateway).devices.map((x) => (x as unknown as Document)._id);
             await deviceModel.deleteMany({ _id: { $in: ids } });
             await gatewayModel.deleteOne({ _id: gw._id });
             res.json(gw);
@@ -95,7 +95,7 @@ export class GatewayService {
     async deleteDevice(req: Request, res: Response, next: NextFunction) {
         const gw = await gatewayModel.findOne({ sn: req.params.sn });
         if (gw) {
-            const ids = (gw as Gateway & Document).devices.map((x: Device & Document) => x._id);
+            const ids = (gw as unknown as Gateway).devices.map((x) => (x as unknown as Document)._id);
             const dev = await deviceModel.findOne({ _id: { $in: ids }, UID: req.params.uid });
             if (dev === null) {
                 await next(new DeviceNotFoundException(req.params.uid));
