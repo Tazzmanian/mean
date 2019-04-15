@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "node": "node build/server.js"
+    "node": "node build/server.js",
+    "ts-node": "ts-node app/server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "jest-environment-node": "^24.7.1",
     "mongodb-memory-server": "^5.0.4",
     "mongoose": "^5.5.1",
+    "ts-node": "^8.1.0",
     "typescript": "^3.4.3"
   },
   "devDependencies": {
