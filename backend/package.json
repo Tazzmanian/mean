@@ -10,7 +10,7 @@
     "ts-node": "ts-node app/server.ts",
     "prod": "tsc && node ./build/app.js",
     "mocha": "mocha -r ts-node/register mocha/*.spec.ts",
-    "jest": "jest --config=jest.config.js"
+    "jest": "jest --config=jest.config.js --forceExit"
   },
   "author": "",
   "license": "ISC",

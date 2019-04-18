@@ -13,7 +13,7 @@ const test = new App(
   [
     new GatewayController()
   ],
-  3000,
+  4000,
   true
 );
 
